@@ -1,7 +1,9 @@
 import Link from "next/link";
-import {posts} from "../../lib/loader";
+import { posts } from "../../lib/loader";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts`);
+  const posts = await res.json();
   const featuredPosts = posts.slice(0, 2); // First 2 posts as featured
 
   return (
@@ -14,20 +16,20 @@ export default function HomePage() {
       <div className="mb-6">
         <h2 className="text-2xl font-semibold mb-2">Featured Posts</h2>
         <ul className="flex gap-1 justify-center items-center">
-        {featuredPosts.map((post) => (
-          <div key={post.id} className="card bg-base-100 w-96 shadow-sm">
-            <div className="card-body">
-              <h2 className="card-title">{post.title}</h2>
-              <p>{post.description}</p>
-              <div className="card-actions justify-end">
-                <Link href={`/posts/${post.id}`} className="btn btn-primary">
-                  Read Now!
-                </Link>
+          {featuredPosts.map((post: any) => (
+            <div key={post.id} className="card bg-base-100 w-96 h-[250] shadow-sm">
+              <div className="card-body">
+                <h2 className="card-title">{post.title}</h2>
+                <p>{post.description}</p>
+                <div className="card-actions justify-end">
+                  <Link href={`/posts/${post.id}`} className="btn btn-primary">
+                    Read Now!
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </ul>
+          ))}
+        </ul>
       </div>
 
       {/* <div className="flex gap-4">
